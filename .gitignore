@@ -1,0 +1,9 @@
+__pychache__
+.vscode
+
+/content
+/docx_files
+/generation
+/node_modules
+/pdfs
+test.py
