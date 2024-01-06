@@ -119,6 +119,12 @@ def get_body_text(cover_letter_body_txt:str, details:dict):
 
 def generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path):
 
+
+    print(curr_docx_path)
+    print(dest_docx_path)
+    print(curr_pdf_path)
+    print(dest_pdf_path)
+
     # generate pdf from docx
     soffice = get_soffice_cmd(sys.platform)
     try:

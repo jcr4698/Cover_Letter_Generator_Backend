@@ -2,7 +2,23 @@ __pycache__
 .vscode
 
 /content
-/docx_files
 /node_modules
-/pdfs
 test.py
+
+/docx_files/Chase_Cover_Letter_Dec_2023.docx
+/docx_files/Cover_Letter_Template.docx
+/docx_files/Jan_Rubio_CTR_Resume_Dec_2023.docx
+/docx_files/Jan_Rubio_Upshop_Cover_Letter_Jan_2024.docx
+/docx_files/Jan_Rubio_Wayfair_Cover_Letter_Nov_2023.docx
+/docx_files/TACC_COVERLETTER_DELETE_L8R.docx
+/docx_files/Upshop_Cover_Letter_2024.docx
+/docx_files/roblox_cover_letter.docx
+
+/pdfs/Chase_Cover_Letter_Dec_2023.pdf
+/pdfs/Cover_Letter_Template.pdf
+/pdfs/Example_Cover_Letter.pdf
+/pdfs/Jan_Rubio_CTR_Dec_2023.pdf
+/pdfs/Jan_Rubio_Upshop_Cover_Letter_Jan_2024.pdf
+/pdfs/Jan_Rubio_Wayfair_Cover_Letter_Nov_2023.pdf
+/pdfs/TACC_COVERLETTER_DELETE_L8R.pdf
+/pdfs/roblox_cover_letter_2023.pdf
