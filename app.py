@@ -29,9 +29,10 @@ def generate_cover_letter():
 			curr_cov_let.set_company(cover_letter_info["company"])
 			curr_cov_let.set_cover_letter_body(cover_letter_info["cover_letter_body"])
 
-			curr_cov_let.generate_cover_letter("example.pdf")
-			return send_file("./pdfs/example.pdf")
+			cov_let_filename = cover_letter_info["file_name"] + ".pdf"
+			curr_cov_let.generate_cover_letter(cov_let_filename)
+			return send_file("./pdfs/"+cov_let_filename)
 
-	except Exception:
-		print("nothing")
+	except Exception as e:
+		print(e)
 		return "Nothing to show"
