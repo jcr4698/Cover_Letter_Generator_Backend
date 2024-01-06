@@ -9,6 +9,10 @@ app = Flask(__name__)
 def hello_world():
 	return "Hello, World!"
 
+@app.route("/show_cover_letter/<file_name>", methods=["GET"])
+def view_cover_letter(file_name:str):
+    return send_file("./pdfs/"+file_name)
+
 @app.route("/cover_letter", methods=["GET", "POST"])
 def generate_cover_letter():
 
