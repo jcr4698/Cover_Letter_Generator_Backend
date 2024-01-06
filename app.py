@@ -1,5 +1,6 @@
 from flask import Flask, send_file, request, jsonify
 import json
+import os
 
 from cover_letter import CoverLetter
 
@@ -30,6 +31,10 @@ def generate_cover_letter():
 			curr_cov_let.set_cover_letter_body(cover_letter_info["cover_letter_body"])
 
 			cov_let_filename = cover_letter_info["file_name"] + ".pdf"
+			print(cov_let_filename)
+			print(os.getcwd())
+   
+   
 			curr_cov_let.generate_cover_letter(cov_let_filename)
 			return send_file("./pdfs/"+cov_let_filename)
 
