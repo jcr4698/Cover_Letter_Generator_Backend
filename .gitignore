@@ -3,7 +3,6 @@ __pycache__
 
 /content
 /docx_files
-/generation
 /node_modules
 /pdfs
 test.py
