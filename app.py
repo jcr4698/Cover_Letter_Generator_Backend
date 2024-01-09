@@ -1,10 +1,12 @@
 from flask import Flask, send_file, request, jsonify
+from flask_cors import CORS
 import json
 import os
 
 from cover_letter import CoverLetter
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def hello_world():
@@ -17,7 +19,7 @@ def view_cover_letter(file_name:str):
 	except Exception as e:
 		return file_name + "not found"
 
-@app.route("/cover_letter/<file_name>", methods=["GET"])
+@app.route("/cover_letter/<file_name>", methods=["GET", "POST"])
 def generate_cover_letter(file_name:str):
 
 	try:
