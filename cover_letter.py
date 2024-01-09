@@ -139,6 +139,10 @@ class CoverLetter:
             curr_pdf_path = "{}{}{}".format(self._curr_path, DIR_SLASH, pdf_filename)
             dest_pdf_path = "{}{}{}".format(self._pdf_path, DIR_SLASH, pdf_filename)
             generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path)
+            
+            return pdf_filename
+        
+        return file_rename+".pdf" # will never occur
     
     ''' Header Section '''
     def _cover_letter_header_section(self, document:Document, cover_letter_details:dict):

@@ -12,31 +12,28 @@ def hello_world():
 
 @app.route("/show_cover_letter/<file_name>", methods=["GET"])
 def view_cover_letter(file_name:str):
-    return send_file("./pdfs/"+file_name)
+	try:
+		return send_file("pdfs/" + file_name)
+	except Exception as e:
+		return file_name + "not found"
 
-@app.route("/cover_letter", methods=["GET", "POST"])
-def generate_cover_letter():
+@app.route("/cover_letter/<file_name>", methods=["GET"])
+def generate_cover_letter(file_name:str):
 
 	try:
 		cover_letter_info = request.get_json()
 		if(cover_letter_info):
-			print(cover_letter_info)
-
 			curr_cov_let = CoverLetter()
-			curr_cov_let.set_full_name(cover_letter_info["full_name"])
-			curr_cov_let.set_phone_num(cover_letter_info["phone_num"])
-			curr_cov_let.set_email(cover_letter_info["email"])
-			curr_cov_let.set_linkedin(cover_letter_info["linkedin"])
-			curr_cov_let.set_company(cover_letter_info["company"])
-			curr_cov_let.set_cover_letter_body(cover_letter_info["cover_letter_body"])
+			curr_cov_let.set_full_name(cover_letter_info["full_name"].strip())
+			curr_cov_let.set_phone_num(cover_letter_info["phone_num"].strip())
+			curr_cov_let.set_email(cover_letter_info["email"].strip())
+			curr_cov_let.set_linkedin(cover_letter_info["linkedin"].strip())
+			curr_cov_let.set_company(cover_letter_info["company"].strip())
+			curr_cov_let.set_cover_letter_body(cover_letter_info["cover_letter_body"].strip())
 
-			cov_let_filename = cover_letter_info["file_name"] + ".pdf"
-			print(cov_let_filename)
 			print(os.getcwd())
-   
-   
-			curr_cov_let.generate_cover_letter(cov_let_filename)
-			return send_file("./pdfs/"+cov_let_filename)
+			filename_out = curr_cov_let.generate_cover_letter(file_name)
+			return send_file("./pdfs/"+filename_out)
 
 	except Exception as e:
 		print(e)

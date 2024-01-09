@@ -117,48 +117,63 @@ def get_body_text(cover_letter_body_txt:str, details:dict):
     cover_letter_txt += "\n\nSincerely,\n{}".format(details["name"])
     return cover_letter_txt
 
-def generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path):
-    # generate pdf from docx
-    soffice = get_soffice_cmd(sys.platform)
-    try:
-        subprocess.call(
-            [soffice,
-            "--headless",
-            "--convert-to",
-            "pdf",
-            curr_docx_path]
-        )
-    except subprocess.CalledProcessError as e:
-        print("Error in line 105")
-        print(e)
-        return False
+# def generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path):
+#     # generate pdf from docx
+#     soffice = get_soffice_cmd(sys.platform)
+#     try:
+#         subprocess.call(
+#             [soffice,
+#             "--headless",
+#             "--convert-to",
+#             "pdf",
+#             curr_docx_path]
+#         )
+#     except subprocess.CalledProcessError as e:
+#         print("Error in line 105")
+#         print(e)
+#         return False
 
-    # rename/move pdf to appropriate folder
-    try:
-        os.rename(curr_pdf_path, dest_pdf_path)
-    except Exception as e:
-        print("Error: Could not move {} to {}".format(curr_pdf_path, dest_pdf_path))
-        print(e)
-        return False
+#     # rename/move pdf to appropriate folder
+#     try:
+#         os.rename(curr_pdf_path, dest_pdf_path)
+#     except Exception as e:
+#         print("Error: Could not move {} to {}".format(curr_pdf_path, dest_pdf_path))
+#         print(e)
+#         return False
+    
+#     # rename/move docx to appropriate folder
+#     try:
+#         os.rename(curr_docx_path, dest_docx_path)
+#     except Exception as e:
+#         print("Error: Could not move {} to {}".format(curr_docx_path, dest_docx_path))
+#         print(e)
+#         return False
+    
+#     # try:
+#     #     # remove the docx
+#     #     subprocess.call(
+#     #         ["rm",
+#     #         "{}/{}".format(docx_path, docx_filename)]
+#     #     )
+#     # except Exception as e:
+#     #     print(e)
+#     #     return False
+    
+#     return True
+
+import aspose.words as aw
+
+def generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path):
     
     # rename/move docx to appropriate folder
     try:
+        gen_docx = aw.Document(curr_docx_path)
+        gen_docx.save(dest_pdf_path)
         os.rename(curr_docx_path, dest_docx_path)
     except Exception as e:
         print("Error: Could not move {} to {}".format(curr_docx_path, dest_docx_path))
         print(e)
         return False
-    
-    # try:
-    #     # remove the docx
-    #     subprocess.call(
-    #         ["rm",
-    #         "{}/{}".format(docx_path, docx_filename)]
-    #     )
-    # except Exception as e:
-    #     print(e)
-    #     return False
-    
     return True
 
 # Saved code (just in case):
