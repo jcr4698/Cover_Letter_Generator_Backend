@@ -2,6 +2,7 @@ import docx
 import os
 import sys
 import subprocess
+import aspose.words as aw
 
 def get_slash(operating_system):
     # Get the slash from environment
@@ -160,8 +161,6 @@ def get_body_text(cover_letter_body_txt:str, details:dict):
 #     #     return False
     
 #     return True
-
-import aspose.words as aw
 
 def generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path):
     
