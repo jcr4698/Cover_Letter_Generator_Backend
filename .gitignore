@@ -3,7 +3,6 @@ __pycache__
 
 /content
 /node_modules
-test.py
 
 /docx_files/Chase_Cover_Letter_Dec_2023.docx
 /docx_files/Cover_Letter_Template.docx
@@ -24,3 +23,5 @@ test.py
 /pdfs/TACC_COVERLETTER_DELETE_L8R.pdf
 /pdfs/roblox_cover_letter_2023.pdf
 /pdfs/example.pdf
+
+cover_letter_gen_gui.py

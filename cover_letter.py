@@ -142,9 +142,8 @@ class CoverLetter:
                 self.set_font(family="Calibri B", size=13)
                 self.cell(w=0, h=5, txt=cover_letter_details["name"], border=0, fill=0, align="C")
                 
-                # helpful details
+                # Line break
                 self.ln(5.5)
-                # max-width: 190
                 
                 # Details
                 cover_letter_details_txt = "{} | {} | {}".format(
@@ -183,8 +182,6 @@ class CoverLetter:
 
         return pdf
 
-    # def get_email(self):
-    #     return self._email
     
 # cv = CoverLetter()
 # cv.set_full_name("Jan Carlos Rubio Sánchez")
