@@ -1,12 +1,15 @@
 import os
 import sys
 
+# pdf
+from fpdf import FPDF
+
 # docx modules
-from docx import Document
-from docx.shared import Pt
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.style import WD_STYLE_TYPE
-from docx.shared import Inches
+# from docx import Document
+# from docx.shared import Pt
+# from docx.enum.text import WD_ALIGN_PARAGRAPH
+# from docx.enum.style import WD_STYLE_TYPE
+# from docx.shared import Inches
 from datetime import date
 
 # cover letter backend modules
@@ -82,8 +85,6 @@ class CoverLetter:
         self._cover_body_ptr
     
     def generate_cover_letter(self, filename:str):
-        # Create Document
-        document = Document()
 
         # Add Header
         cover_letter_header_details = {
@@ -92,7 +93,7 @@ class CoverLetter:
             "email": self._email,
             "linkedin": self._linkedin
         }
-        self._cover_letter_header_section(document, cover_letter_header_details)
+        PDF = self._cover_letter_header_section(cover_letter_header_details)
 
         # Add Body
         curr_date = date.today()
@@ -105,12 +106,7 @@ class CoverLetter:
             "name": self._full_name
         }
         body_txt = get_body_text(self._cover_body_txt, cover_letter_body_details)
-        self._cover_letter_body_section(document, body_txt)
-
-        # Document Margins
-        for section in document.sections:
-            section.left_margin = Inches(1)
-            section.right_margin = Inches(1)
+        pdf = self._cover_letter_body_section(PDF, body_txt)
 
         # Name or rename the docx
         file_no_type = os.path.splitext(" " + filename)[0].strip()
@@ -124,77 +120,74 @@ class CoverLetter:
         # Save the docx with new name
         if(file_rename):
             
-            # Assign name to docx and pdf
-            docx_filename = "{}{}".format(file_rename, ".docx")
-            pdf_filename = "{}{}".format(file_rename, ".pdf")
-            
-            # Generate the docx file
-            document.save(docx_filename)
-            
+            # Assign name to pdf
+            pdf_filename = "{}{}".format(file_rename, ".pdf")    
             DIR_SLASH = get_slash(sys.platform)
-            
-            # Convert docx to pdf (only if docx saves successfully)
-            curr_docx_path = "{}{}{}".format(self._curr_path, DIR_SLASH, docx_filename)
-            dest_docx_path = "{}{}{}".format(self._docx_path, DIR_SLASH, docx_filename)
-            curr_pdf_path = "{}{}{}".format(self._curr_path, DIR_SLASH, pdf_filename)
             dest_pdf_path = "{}{}{}".format(self._pdf_path, DIR_SLASH, pdf_filename)
-            generate_pdf(curr_docx_path, dest_docx_path, curr_pdf_path, dest_pdf_path)
+            
+            # Generate the pdf file
+            pdf.output(dest_pdf_path)
             
             return pdf_filename
         
         return file_rename+".pdf" # will never occur
     
     ''' Header Section '''
-    def _cover_letter_header_section(self, document:Document, cover_letter_details:dict):
-        # initialize header
-        header_section = document.sections[0].header
-
-        # add and format header paragraph
-        header = header_section.add_paragraph()
-        remove_parag = header_section.paragraphs[0]._element
-        remove_parag.getparent().remove(remove_parag)
-        remove_parag._p = remove_parag._element = None
-        header.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-        # add and format name to header paragraph
-        header_name = header.add_run()
-        header_name.text = cover_letter_details["name"]
-        document.styles.add_style("Cover_Letter_Style_Header_Name", WD_STYLE_TYPE.CHARACTER)
-        header_name_style = document.styles["Cover_Letter_Style_Header_Name"]
-        header_name_style.font.name = "Calibri"
-        header_name_style.font.size = Pt(13)
-        header_name_style.font.bold = True
-        header_name.style = header_name_style
-
-        # add and format details to header paragraph
-        header_details = header.add_run()
-        header_details.text = "\n{} | ".format(cover_letter_details["phone_num"]) # phone number
-        add_hyperlink(header, cover_letter_details["email"], cover_letter_details["email"]) # gmail link
-        header_details = header.add_run()
-        header_details.text = " | " # space
-        add_hyperlink(header, cover_letter_details["linkedin"], cover_letter_details["linkedin"]) # linkedin link
-
-        # set style for header details
-        header_details_style = document.styles["Normal"]
-        header_details_style.font.name = "Calibri"
-        header_details_style.font.size = Pt(10)
-        header_details_style.font.bold = False
+    def _cover_letter_header_section(self, cover_letter_details:dict):
+        
+        class PDF(FPDF):
+            def header(self):
+                
+                self.add_font("Calibri", fname=r"./generation/calibri.ttf", uni=True)
+                self.add_font("Calibri B", fname=r"./generation/calibrib.ttf", uni=True)
+                
+                # Line break
+                self.ln(3.3)
+                
+                # Full Name
+                self.set_font(family="Calibri B", size=13)
+                self.cell(w=0, h=5, txt=cover_letter_details["name"], border=0, fill=0, align="C")
+                
+                # helpful details
+                self.ln(5.5)
+                # max-width: 190
+                
+                # Details
+                cover_letter_details_txt = "{} | {} | {}".format(
+                    cover_letter_details["phone_num"],
+                    cover_letter_details["email"],
+                    cover_letter_details["linkedin"]
+                )
+                self.set_font(family="calibri", size=10)
+                self.cell(w=0, h=5, txt=cover_letter_details_txt, border=0, fill=0, align="C")
+                
+                self.link(x=71.9, y=21, w=24.5, h=1, link=cover_letter_details["email"])
+                self.link(x=103.5, y=21, w=57, h=1, link=cover_letter_details["linkedin"])
+                
+                # Line break
+                self.ln(8.5)
+        return PDF
 
     ''' Body Content Section '''
-    def _cover_letter_body_section(self, document:Document, cover_letter_text:str):
+    def _cover_letter_body_section(self, PDF, cover_letter_text:str):
+        
+        # save FPDF() class into a variable pdf
+        pdf = PDF(format="Letter")
 
-        # add and format letter section
-        letter = document.add_paragraph()
+        # Styling
+        pdf.l_margin = 24.4
+        pdf.r_margin = 24.4
+        
+        # Add a page
+        pdf.add_page()
 
-        # add and format name to introduction paragraph
-        letter_content = letter.add_run()
-        letter_content.text = cover_letter_text # insert cover letter text
-        document.styles.add_style("Cover_Letter_Style_Content", WD_STYLE_TYPE.CHARACTER)
-        letter_content_style = document.styles["Cover_Letter_Style_Content"]
-        letter_content_style.font.name = "Calibri"
-        letter_content_style.font.size = Pt(11)
-        letter_content_style.font.bold = False
-        letter_content.style = letter_content_style
+        # set style and size of font that you want in the pdf
+        pdf.set_font(family="calibri", size=11)
+
+        # create a cell
+        pdf.multi_cell(0, 5.5, txt=cover_letter_text , border=0, align = 'L')
+
+        return pdf
 
     # def get_email(self):
     #     return self._email

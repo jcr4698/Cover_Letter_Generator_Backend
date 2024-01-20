@@ -3,3 +3,4 @@ flask-cors
 Gunicorn
 python-docx
 aspose-words
+fpdf
