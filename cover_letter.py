@@ -4,16 +4,10 @@ import sys
 # pdf
 from fpdf import FPDF
 
-# docx modules
-# from docx import Document
-# from docx.shared import Pt
-# from docx.enum.text import WD_ALIGN_PARAGRAPH
-# from docx.enum.style import WD_STYLE_TYPE
-# from docx.shared import Inches
 from datetime import date
 
 # cover letter backend modules
-from generation.cover_letter_utils import add_hyperlink, get_cover_letter_text, get_body_text, generate_pdf, get_slash
+from generation.cover_letter_utils import get_body_text, get_slash
 
 class CoverLetter:
     
@@ -22,8 +16,8 @@ class CoverLetter:
         self._curr_path = os.path.abspath(os.getcwd())
         os.chdir("./pdfs/")
         self._pdf_path = os.path.abspath(os.getcwd())
-        os.chdir("../docx_files")
-        self._docx_path = os.path.abspath(os.getcwd())
+        # os.chdir("../docx_files")
+        # self._docx_path = os.path.abspath(os.getcwd())
         os.chdir("..")
         self._MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         
